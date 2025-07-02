@@ -6,30 +6,19 @@ use App\Models\Categoria;
 use App\Models\Proveedores;
 use Illuminate\Http\Request;
 
-
 /**
  * Class CategoriaController
  * @package App\Http\Controllers
  */
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-    $categorias = Categoria::with('proveedor')->get();
-    return view('categoria.index', compact('categorias'));
-
+        $categorias = Categoria::with('proveedor')->get();
+        $title = 'Categorías';
+        return view('categoria.index', compact('categorias', 'title'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $categoria = new Categoria();
@@ -37,12 +26,6 @@ class CategoriaController extends Controller
         return view('categoria.create', compact('categoria', 'proveedores'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -63,39 +46,18 @@ class CategoriaController extends Controller
             ->with('success', 'Categoría creada correctamente.');
     }
 
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $categoria = Categoria::find($id);
-
         return view('categoria.show', compact('categoria'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Categoria $categoria)
     {
         $proveedores = Proveedores::all();
         return view('categoria.edit', compact('categoria', 'proveedores'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Categoria $categoria
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Categoria $categoria)
     {
         $request->validate([
@@ -108,11 +70,6 @@ class CategoriaController extends Controller
         return redirect()->route('categorias.index')->with('success', 'Categoría actualizada correctamente.');
     }
 
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
     public function destroy(Categoria $categoria)
     {
         $categoria->delete();
@@ -120,11 +77,9 @@ class CategoriaController extends Controller
         return response()->json(['message' => 'Categoría eliminada correctamente']);
     }
 
-
     public function list()
     {
         $categorias = Categoria::with('proveedor')->get();
-
         return response()->json([
             'data' => $categorias
         ]);
@@ -199,7 +154,5 @@ class CategoriaController extends Controller
     public function getFullNameAttribute()
     {
         return "{$this->nombre} [UPC: {$this->upc}]";
-
     }
-
 }

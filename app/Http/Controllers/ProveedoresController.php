@@ -11,7 +11,8 @@ class ProveedoresController extends Controller
     public function index()
     {
         $proveedores = Proveedores::all();
-        return view('proveedor.index', compact('proveedores'));
+        $title = 'Proveedores'; // o el título que quieras mostrar
+        return view('proveedor.index', compact('proveedores', 'title'));
     }
 
     public function list()
@@ -29,7 +30,6 @@ class ProveedoresController extends Controller
             })
         ]);
     }
-
 
     public function create()
     {
@@ -77,6 +77,7 @@ class ProveedoresController extends Controller
 
         return redirect()->route('proveedores.index')->with('success', 'Proveedor actualizado correctamente.');
     }
+
     public function destroy($id)
     {
         try {

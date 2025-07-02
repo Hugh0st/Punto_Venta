@@ -18,7 +18,7 @@ class Categoria extends Model
     ];
 
     // Relación con Proveedor
-    public function proveedor()
+    public function proveedor(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Proveedores::class, 'proveedor_id');
     }
